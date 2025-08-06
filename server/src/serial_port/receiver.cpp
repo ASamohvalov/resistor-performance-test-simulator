@@ -1,25 +1,16 @@
 #include "receiver.h"
 #include "route/route_provider.h"
+#include "serial_port/serial_port.h"
 
 #include <spdlog/spdlog.h>
 
 namespace serialPort
 {
-#if 0
-    void Receiver::start() 
+    void receiverLoop()
     {
-        std::thread thread (&Receiver::run, this);        
-        thread.detach();
-    }
-
-    void Receiver::run()
-#endif
-
-    void Receiver::start() 
-    {
-	    openPort();
+        SerialPort& serialPort = SerialPort::getInstance();
         while (true) {
-            std::string data = readLine();
+            std::string data = serialPort.readLine();
             if (data.empty() || data == "\n") continue;
             route::call(data);
         }

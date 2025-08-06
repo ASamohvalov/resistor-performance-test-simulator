@@ -19,10 +19,11 @@ add_executable(server
   src/db/redis_wrapper.cpp
   src/serial_port/serial_port.cpp
   src/serial_port/receiver.cpp
-  src/serial_port/sender.cpp
 
   src/route/routes.cpp
   src/route/route_provider.cpp
+
+  src/device/resistor.cpp
 )
 
 target_include_directories(server PRIVATE

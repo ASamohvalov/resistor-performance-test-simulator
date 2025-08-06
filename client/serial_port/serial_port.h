@@ -1,7 +1,7 @@
 #ifndef SERIAL_PORT_H
 #define SERIAL_PORT_H
 
-#include <string>
+#include <QString>
 
 namespace serialPort 
 {
@@ -10,8 +10,8 @@ namespace serialPort
     public:
         static SerialPort& getInstance();
         
-        std::string readLine() const;
-        void writeLine(const std::string& data) const;
+        QString readLine() const;
+        void writeLine(const QString& data) const;
     
     private:
         SerialPort();
@@ -20,7 +20,7 @@ namespace serialPort
         void openPort();
 
         int fd_ = 0;
-        const std::string portfile_;
+        const QString portfile_;
     };
 }
 

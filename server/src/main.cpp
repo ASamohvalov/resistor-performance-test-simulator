@@ -2,8 +2,7 @@
 
 int main()
 {
-    serialPort::Receiver receiver;
-    receiver.start();
+    serialPort::receiverLoop();
 
     return 0; 
 }

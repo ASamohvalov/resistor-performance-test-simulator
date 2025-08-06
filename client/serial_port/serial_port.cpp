@@ -1,24 +1,26 @@
 #include "serial_port.h"
-#include "config/env_handler.h"
+#include "../config/env_handler.h"
 
 #include <fcntl.h>
-#include <spdlog/spdlog.h>
+#include <qglobal.h>
 #include <stdexcept>
 #include <unistd.h>
 #include <termios.h>
 
+#include <QDebug>
+
 namespace serialPort
 {
-    SerialPort::SerialPort() : portfile_(config::getEnv("SERVER_COM_PORT"))
+    SerialPort::SerialPort() : portfile_(config::getEnv("CLIENT_COM_PORT"))
     {
         openPort();
+        qInfo() << "порт " + portfile_ + " открыт";
     }
 
     SerialPort::~SerialPort()
     {
         if (fd_ >= 0) {
             close(fd_);
-            spdlog::info("port " + portfile_ + " is closed");
         }
     }
 
@@ -29,9 +31,9 @@ namespace serialPort
     }
 
     void SerialPort::openPort() {
-        fd_ = open(portfile_.c_str(), O_RDWR | O_NOCTTY);
+        fd_ = open(portfile_.toUtf8().data(), O_RDWR | O_NOCTTY);
         if (fd_ < 0) {
-            throw std::runtime_error("failed to open port: " + portfile_);
+            throw std::runtime_error("failed to open port: " + portfile_.toStdString());
         }
 
         termios tty;
@@ -51,12 +53,11 @@ namespace serialPort
             close(fd_);
             throw std::runtime_error("failed to set port attributes");
         }
-        spdlog::info("port " + portfile_ + " is open");
     }
 
-    std::string SerialPort::readLine() const
+    QString SerialPort::readLine() const
     {
-        std::string line;
+        QString line;
         char sy;
         while (read(fd_, &sy, 1) == 1) {
             if (sy == '\n') {
@@ -67,11 +68,9 @@ namespace serialPort
         return line;
     }
 
-    void SerialPort::writeLine(const std::string& data) const
+    void SerialPort::writeLine(const QString& data) const
     {
-        const std::string& message = data;
-        spdlog::info(message);
-        write(fd_, message.c_str(), data.length());
-        fsync(fd_);
+        QByteArray message = data.toUtf8() + '\n';
+        write(fd_, message.data(), message.size());
     }
 }

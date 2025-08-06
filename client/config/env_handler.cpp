@@ -1,6 +1,7 @@
 #include "env_handler.h"
-#include <string>
-#include "dotenv.h"
+#include "../include/dotenv.h"
+
+#include <QString>
 
 namespace config
 {
@@ -10,8 +11,8 @@ namespace config
         return env;
     }
 
-    std::string getEnv(const std::string& key)
+    QString getEnv(const QString& key)
     {
-        return getInstance().get(key);
+        return QString::fromStdString(getInstance().get(key.toStdString()));
     }
 } // namespace config

@@ -22,6 +22,9 @@ namespace route
             case 1:
                 setTemperature(routeData);
                 break;
+            case 2:
+                setAmperage(routeData);
+                break;
             default:
                 spdlog::warn("route not defined");
             }
