@@ -69,9 +69,9 @@ namespace serialPort
 
     void SerialPort::writeLine(const std::string& data) const
     {
-        const std::string& message = data;
-        spdlog::info(message);
-        write(fd_, message.c_str(), data.length());
-        fsync(fd_);
+        spdlog::info("set to client port - " + data);
+        const std::string message = data + "\n";
+        write(fd_, message.c_str(), message.length());
+        tcdrain(fd_);
     }
 }

@@ -72,5 +72,6 @@ namespace serialPort
     {
         QByteArray message = data.toUtf8() + '\n';
         write(fd_, message.data(), message.size());
+        tcdrain(fd_); 
     }
 }

@@ -14,10 +14,17 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    static MainWindow& getInstance();
+
+    void setResistance(const QString& res);
+    void setVoltage(const QString& vol);
+    void setPower(const QString& power);
+
+private:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+public slots:
     void on_pushButton_clicked();
 
 private:

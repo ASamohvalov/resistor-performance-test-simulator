@@ -23,6 +23,9 @@ set(PROJECT_SOURCES
 
         config/env_handler.cpp config/env_handler.h
 
+        route/route_provider.cpp route/route_provider.h
+        route/routes.cpp route/routes.h
+
         include/dotenv.h
 )
 

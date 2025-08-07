@@ -6,18 +6,25 @@
 
 namespace serialPort
 {
-    void receiverLoop();
+    enum class Message { Temperature, Voltage, Power };
 
     class ReceiverThread : public QThread
     {
         Q_OBJECT
-
     public:
+        ReceiverThread(QObject* parent = nullptr);
         bool quit = false;
 
-    private:
+    signals:
+        void setResistance(const QString& resistance);
+        void setVoltage(const QString& voltage);
+        void setPower(const QString& power);
+
+    protected:
         void run() override;
-        
+
+    private slots:
+        void getMessage(const QString& data, Message message);
     };
 }
 

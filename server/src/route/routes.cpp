@@ -4,6 +4,7 @@
 #include "serial_port/serial_port.h"
 
 #include <spdlog/spdlog.h>
+#include <utility>
 
 namespace route
 {
@@ -35,8 +36,9 @@ namespace route
             return;
         }
         spdlog::info("set amperage - " + data);
-        double voltage = 
-                device::calculateVoltageByAmperage(device::getCurrentResistor(), inputAmperage);
-        serialPort::SerialPort::getInstance().writeLine("2/" + std::to_string(voltage));
+        std::pair<double, double> res = 
+                device::calculateVoltageAndPowerByAmperage(device::getCurrentResistor(), inputAmperage);
+        serialPort::SerialPort::getInstance()
+                .writeLine("2/" + std::to_string(res.first) + "&" + std::to_string(res.second));
     }
 }

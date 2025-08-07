@@ -5,7 +5,10 @@
 namespace device
 {
     static constexpr double ROOM_TEMP = 20;
-    static constexpr double START_RESISTANCE = 200;
+    static constexpr double START_RESISTANCE = 100;
+    static constexpr double MIN_POSSIBLE_TEMP = -65;
+    static constexpr double MAX_POSSIBLE_TEMP = 155;
+    static constexpr double MAX_POWER = 1;
 
     const Resistor baseResistor { START_RESISTANCE };
 
@@ -21,13 +24,25 @@ namespace device
 
     double calculateResistanceByTemp(const Resistor& resistor, double temp)
     {
+        if (temp < MIN_POSSIBLE_TEMP || temp > MAX_POSSIBLE_TEMP) {
+            spdlog::warn("inaccessible temperature");
+            return 0;
+        }
         return resistor.resistance * 
                 (1 + resistor.resistance_coefficient * (temp - ROOM_TEMP));
     }
 
-    double calculateVoltageByAmperage(const Resistor& resistor, double amperage)
+    std::pair<double, double> calculateVoltageAndPowerByAmperage(
+                const Resistor& resistor, double amperage)
     {
         // I = V / R
-        return amperage * resistor.resistance;
+        double voltage = amperage * resistor.resistance;
+        // P = I * I * R
+        double power = amperage * amperage * resistor.resistance;
+        if (power > MAX_POWER) {
+            spdlog::warn("max power exceeded");
+            return std::make_pair(0, 0);
+        }
+        return std::make_pair(voltage, power);
     }
 }

@@ -3,6 +3,7 @@
 
 #include <QApplication>
 
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -10,7 +11,7 @@ int main(int argc, char *argv[])
     serialPort::ReceiverThread receiver;
     receiver.start();
 
-    MainWindow w;
+    MainWindow& w = MainWindow::getInstance();
     w.show();
 
     return a.exec();

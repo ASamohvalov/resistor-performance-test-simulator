@@ -1,6 +1,8 @@
 #ifndef RESISTOR_H
 #define RESISTOR_H
 
+#include <utility>
+
 namespace device
 {
     struct Resistor
@@ -13,8 +15,11 @@ namespace device
     Resistor getCurrentResistor();
 
     // for metallic resistors
+    // @return 0 if error
     double calculateResistanceByTemp(const Resistor& resistor, double temp);
-    double calculateVoltageByAmperage(const Resistor& resistor, double amperage);
+    // @return first - voltage, second - power
+    std::pair<double, double> calculateVoltageAndPowerByAmperage(
+                const Resistor& resistor, double amperage);
 }
 
 #endif
