@@ -3,9 +3,12 @@
 #include "serial_port/serial_port.h"
 
 #include <QDebug>
+#include <chrono>
+#include <qglobal.h>
 #include <qtablewidget.h>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <thread>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -88,7 +91,10 @@ void MainWindow::on_pushButton_clicked()
     int index = ui->mainTemp->text().indexOf('=');
     ui->mainTemp->setText(ui->mainTemp->text().mid(0, index + 2) + " " + ui->lineEdit->text());
 
+    qInfo() << ui->lineEdit->text();
+    qInfo() << ui->lineEdit_2->text();
     serialPort::SerialPort::getInstance().writeLine("1/" + ui->lineEdit->text());
+    // std::this_thread::sleep_for(std::chrono::seconds{1});
     serialPort::SerialPort::getInstance().writeLine("2/" + ui->lineEdit_2->text());
 }
 
