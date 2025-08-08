@@ -20,10 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->progressBar->setMinimum(-150); // минимальная температура
     ui->progressBar->setMaximum(150); // максимальная температура
 
-    // Начальное значение
     ui->progressBar->setValue(-45); // начальная температура
 
-    // Создание меток
     QLabel *labelMin = new QLabel("-150", this);
     labelMin->setGeometry(ui->progressBar->x(), ui->progressBar->y() + ui->progressBar->height() + 5, 30, 20);
 
@@ -33,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     QLabel *labelMax = new QLabel("150", this);
     labelMax->setGeometry(ui->progressBar->x() + ui->progressBar->width() - 30, ui->progressBar->y() + ui->progressBar->height() + 5, 30, 20);
 
-    // Стиль для прогресс-бара
     ui->progressBar->setStyleSheet(
         "QProgressBar {"
         "border: 2px solid grey;"
@@ -48,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent)
         );
 
     ui->tableWidget->setRowCount(6);
-
 }
 
 MainWindow::~MainWindow()
@@ -63,20 +59,24 @@ MainWindow& MainWindow::getInstance()
 }
 
 void MainWindow::setResistance(const QString& res)
-{  
-    QTableWidgetItem *item = new QTableWidgetItem(res); 
-    ui->tableWidget->setItem(0,1,item);
-    qInfo() << "set - " << res;
+{
+    QTableWidgetItem *item = new QTableWidgetItem(res + " (Ом)");
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->tableWidget->setItem(0, 0, item);
 }
 
 void MainWindow::setVoltage(const QString& vol)
 {
-    qInfo() << "set - " << vol;
+    QTableWidgetItem *item = new QTableWidgetItem(vol + " (B)");
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->tableWidget->setItem(0, 1, item);
 }
 
 void MainWindow::setPower(const QString& power)
-{   
-    qInfo() << "set - " << power;
+{
+    QTableWidgetItem *item = new QTableWidgetItem(power + " (Вт)");
+    item->setTextAlignment(Qt::AlignCenter);
+    ui->tableWidget->setItem(0, 2, item);
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -94,29 +94,5 @@ void MainWindow::on_pushButton_clicked()
     qInfo() << ui->lineEdit->text();
     qInfo() << ui->lineEdit_2->text();
     serialPort::SerialPort::getInstance().writeLine("1/" + ui->lineEdit->text());
-    // std::this_thread::sleep_for(std::chrono::seconds{1});
     serialPort::SerialPort::getInstance().writeLine("2/" + ui->lineEdit_2->text());
 }
-
-// void MainWindow::on_pushButton_clicked()
-// {
-    // bool ok;
-    // double // // // // re = ui->setTemperatureEdit->toPlainText().toDouble(&ok);
-//     if (!ok) {
-//         ui->errorMessage->setText("некорректный формат");
-//         return;
-//     }
-//     serialPort::SerialPort::getInstance().writeLine("1/" + QString::number(temperature, 'f'));
-//     qInfo() << "температура занесена";
-// }
-
-// void MainWindow::on_pushButton_2_clicked()
-// {
-//     bool ok;
-//     double amperage = ui->amperage->toPlainText().toDouble(&ok);
-//     if (!ok) {
-//         ui->errorMessage->setText("некорректный формат");
-//         return;
-//     }
-//     serialPort::SerialPort::getInstance().writeLine("2/" + QString::number(amperage, 'f'));
-// }

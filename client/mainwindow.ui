@@ -225,7 +225,7 @@ QProgressBar::chunk {
        </column>
        <item row="0" column="0">
         <property name="text">
-         <string>21</string>
+         <string/>
         </property>
         <property name="textAlignment">
          <set>AlignCenter</set>

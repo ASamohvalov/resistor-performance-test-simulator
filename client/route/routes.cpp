@@ -10,7 +10,7 @@ namespace route
 
     void Router::setTemperature(const QString& data)
     {
-        MainWindow::getInstance().setVoltage(data);
+        MainWindow::getInstance().setResistance(data);
     }
 
     void Router::setAmperage(const QString& data)
